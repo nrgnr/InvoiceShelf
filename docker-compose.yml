@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
-      - ./:/var/www/html
+      - ./invoiceshelf:/var/www/html
     environment:
       APP_ENV: production
       APP_KEY: ${APP_KEY}
@@ -33,7 +33,7 @@ services:
     container_name: nginx-alpine
     restart: unless-stopped
     volumes:
-      - ./:/var/www/html
+      - ./invoiceshelf:/var/www/html
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     networks:
       - internal
