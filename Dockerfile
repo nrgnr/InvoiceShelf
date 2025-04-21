@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     zip unzip curl git \
     libzip-dev \
     mariadb-client \
+    netcat-traditional \
     && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath gd
 
 # Install Composer
@@ -29,6 +30,10 @@ RUN mkdir -p /var/www/html/public \
 # Copy application files
 COPY . .
 
+# Copy and set up entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
@@ -37,4 +42,7 @@ RUN chown -R www-data:www-data /var/www/html \
 # Expose port 9000
 EXPOSE 9000
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Default CMD
 CMD ["php-fpm"]
