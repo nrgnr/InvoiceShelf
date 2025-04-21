@@ -23,10 +23,6 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN echo "php_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "php_admin_value[error_log] = /var/log/fpm-php.www.log" >> /usr/local/etc/php-fpm.d/www.conf
 
-# Configure DNS
-RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
-    && echo "nameserver 8.8.4.4" >> /etc/resolv.conf
-
 WORKDIR /var/www/html
 
 # Create directory for the application
