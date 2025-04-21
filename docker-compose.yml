@@ -26,10 +26,13 @@ services:
       MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
       MAIL_FROM_NAME: ${MAIL_FROM_NAME}
     networks:
-      - internal
+      internal:
+        aliases:
+          - invoiceshelf-app
     dns:
       - 8.8.8.8
       - 8.8.4.4
+    dns_search: .
     healthcheck:
       test: [ "CMD", "php-fpm", "-t" ]
       interval: 10s
@@ -45,10 +48,13 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
-      - internal
+      internal:
+        aliases:
+          - invoiceshelf-nginx
     dns:
       - 8.8.8.8
       - 8.8.4.4
+    dns_search: .
     depends_on:
       invoiceshelf-app:
         condition: service_healthy
