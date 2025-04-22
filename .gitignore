@@ -24,3 +24,5 @@ Homestead.yaml
 package-lock.json
 /.dev/docker-compose.yml
 /.dev/docker-compose.yaml
+.env.local
+invoiceshelf-local/

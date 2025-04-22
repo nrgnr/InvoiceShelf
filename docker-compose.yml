@@ -10,6 +10,9 @@ services:
     working_dir: /var/www/html
     volumes:
       - .:/var/www/html:delegated
+    env_file:
+      - .env
+      - .env.local
     environment:
       APP_ENV: production
       APP_KEY: ${APP_KEY}

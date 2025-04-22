@@ -1,0 +1,9 @@
+{
+    "instructions": "Only modify files inside invoiceshelf-local/. Do not touch files inside InvoiceShelf/. Treat InvoiceShelf as a production folder. Never commit changes to main from here.",
+    "important_directories": [
+        "invoiceshelf-local"
+    ],
+    "excluded_directories": [
+        "InvoiceShelf"
+    ]
+}
