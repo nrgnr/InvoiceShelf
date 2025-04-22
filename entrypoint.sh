@@ -21,10 +21,15 @@ if [ "$APP_ENV" = "production" ]; then
     echo "Installing Node.js dependencies..."
     # Force npm to ignore engine requirements
     npm config set engine-strict false
-    npm install --production --no-audit --no-fund
+    # Install all dependencies including dev dependencies needed for build
+    npm ci --include=dev --no-audit --no-fund
 
     echo "Building frontend assets..."
-    npm run build
+    NODE_ENV=production npm run build
+
+    # After build, we can remove dev dependencies
+    echo "Removing development dependencies..."
+    npm prune --production
 fi
 
 # Ensure Laravel key exists
