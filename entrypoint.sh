@@ -48,11 +48,33 @@ php artisan view:cache
 echo "Running migrations..."
 php artisan migrate --force
 
+# Set up storage and bootstrap cache
+echo "Setting up storage..."
+php artisan storage:link
+mkdir -p /var/www/html/storage/app/public
+mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
+mkdir -p /var/www/html/storage/logs
+
 # Fix permissions
 echo "Setting permissions..."
 chown -R www-data:www-data /var/www/html
 chmod -R 755 /var/www/html
-chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache
+find /var/www/html/storage -type d -exec chmod 775 {} \;
+find /var/www/html/storage -type f -exec chmod 664 {} \;
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Create database marker if not exists
+if [ ! -f "/var/www/html/storage/app/database_created" ]; then
+    echo "Creating database marker..."
+    echo "$(date +%s)" > /var/www/html/storage/app/database_created
+    chown www-data:www-data /var/www/html/storage/app/database_created
+fi
+
+# Clear cache one more time to ensure clean state
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
 
 # Start PHP-FPM
 echo "Starting PHP-FPM..."
