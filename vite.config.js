@@ -15,6 +15,7 @@ export default defineConfig({
     },
     build: {
         chunkSizeWarningLimit: 1000,
+        /* Comment out manualChunks based on GitHub issue #5202 for @tiptap/pm error
         rollupOptions: {
             output: {
                 manualChunks: {
@@ -47,6 +48,7 @@ export default defineConfig({
                 }
             }
         },
+        */
         sourcemap: false,
         minify: 'terser',
         terserOptions: {
