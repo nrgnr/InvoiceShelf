@@ -16,23 +16,23 @@ if [ ! -d "vendor" ]; then
     composer install --no-interaction --no-dev --optimize-autoloader
 fi
 
-# Generate key if not set
+# Ensure Laravel key exists
 if [ -z "$APP_KEY" ]; then
     echo "Generating application key..."
-    php artisan key:generate
+    php artisan key:generate --force
 fi
 
-# Run migrations
-echo "Running migrations..."
-php artisan migrate --force
-
 # Clear and cache config
-echo "Caching configuration..."
+echo "Optimizing Laravel..."
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Set proper permissions
+# Run migrations (safe if SESSION_DRIVER=database)
+echo "Running migrations..."
+php artisan migrate --force
+
+# Fix permissions
 echo "Setting permissions..."
 chown -R www-data:www-data /var/www/html
 chmod -R 755 /var/www/html
