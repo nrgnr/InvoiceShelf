@@ -45,6 +45,14 @@ class Handler extends ExceptionHandler
             return response()->view('errors.database', [], 500);
         }
 
+        // Handle Vite manifest not found error
+        if ($exception instanceof \Exception && 
+            str_contains($exception->getMessage(), 'Vite manifest not found')) {
+            return response()->view('errors.vite-manifest', [
+                'message' => 'Frontend assets have not been built. Please run: npm install && npm run build'
+            ], 500);
+        }
+
         return parent::render($request, $exception);
     }
 } 

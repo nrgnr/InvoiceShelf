@@ -16,6 +16,15 @@ if [ ! -d "vendor" ]; then
     composer install --no-interaction --no-dev --optimize-autoloader
 fi
 
+# Install Node.js dependencies and build assets if in production
+if [ "$APP_ENV" = "production" ]; then
+    echo "Installing Node.js dependencies..."
+    npm install --production
+
+    echo "Building frontend assets..."
+    npm run build
+fi
+
 # Ensure Laravel key exists
 if [ -z "$APP_KEY" ]; then
     echo "Generating application key..."

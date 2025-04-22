@@ -1,5 +1,10 @@
 FROM php:8.2-fpm
 
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get update && apt-get install -y nodejs \
+    && npm install -g npm@latest
+
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
