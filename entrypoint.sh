@@ -19,7 +19,9 @@ fi
 # Install Node.js dependencies and build assets if in production
 if [ "$APP_ENV" = "production" ]; then
     echo "Installing Node.js dependencies..."
-    npm install --production
+    # Force npm to ignore engine requirements
+    npm config set engine-strict false
+    npm install --production --no-audit --no-fund
 
     echo "Building frontend assets..."
     npm run build
