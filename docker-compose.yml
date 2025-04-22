@@ -28,7 +28,7 @@ services:
     networks:
       internal:
         aliases:
-          - invoiceshelf-app
+          - invoiceshelf
     dns:
       - 8.8.8.8
       - 8.8.4.4
@@ -43,14 +43,16 @@ services:
     image: nginx:alpine
     container_name: nginx-alpine
     restart: unless-stopped
+    ports:
+      - "80:80"
     volumes:
       - .:/var/www/html:delegated
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
     networks:
       internal:
         aliases:
-          - invoiceshelf-nginx
+          - nginx
     dns:
       - 8.8.8.8
       - 8.8.4.4
