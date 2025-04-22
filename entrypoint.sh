@@ -22,7 +22,7 @@ if [ "$APP_ENV" = "production" ]; then
     # Force npm to ignore engine requirements
     npm config set engine-strict false
     # Install all dependencies including dev dependencies needed for build
-    npm ci --include=dev --no-audit --no-fund
+    npm install --no-audit --no-fund
 
     echo "Building frontend assets..."
     NODE_ENV=production npm run build
