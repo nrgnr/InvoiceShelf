@@ -695,7 +695,8 @@
     "password_reset_successfully": "Passwort erfolgreich zurückgesetzt",
     "enter_email": "Geben Sie Ihre E-Mail ein",
     "enter_password": "Geben Sie das Passwort ein",
-    "retype_password": "Passwort bestätigen"
+    "retype_password": "Passwort bestätigen",
+    "login_with_oidc": "Mit OIDC anmelden"
   },
   "modules": {
     "buy_now": "Kaufen",

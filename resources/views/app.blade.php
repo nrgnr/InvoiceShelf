@@ -22,7 +22,7 @@
     @endforeach
 
     <!-- Handle both development and production modes -->
-    <script type="module" src="/build/assets/main-CjOnh4aP.js"></script>
+    <script type="module" src="/build/assets/main-CvvcEwl8.js"></script>
     <link rel="stylesheet" href="/build/assets/main-CRSU5Ycv.css">
 </head>
 
