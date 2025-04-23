@@ -48,4 +48,14 @@ return [
         'auth_token' => env('CRON_JOB_AUTH_TOKEN', 0),
     ],
 
+    'oidc' => [
+        'client_id' => env('OIDC_CLIENT_ID'),
+        'client_secret' => env('OIDC_CLIENT_SECRET'),
+        'redirect' => env('OIDC_REDIRECT_URL'),
+        'auth_endpoint' => env('OIDC_AUTH_ENDPOINT'),
+        'token_endpoint' => env('OIDC_TOKEN_ENDPOINT'),
+        'userinfo_endpoint' => env('OIDC_USERINFO_ENDPOINT'),
+        'logout_endpoint' => env('OIDC_LOGOUT_ENDPOINT'),
+    ],
+
 ];

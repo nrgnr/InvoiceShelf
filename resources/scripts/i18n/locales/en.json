@@ -1,0 +1,9 @@
+{
+    "login": {
+        "login": "Login",
+        "email": "Email",
+        "password": "Password",
+        "or": "Or",
+        "login_with_oidc": "Login with SSO"
+    }
+}

@@ -19,6 +19,7 @@ use App\Http\Controllers\V1\PDF\InvoicePdfController;
 use App\Http\Controllers\V1\PDF\PaymentPdfController;
 use App\Models\Company;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\V1\Admin\Auth\OIDCController;
 
 // Module Asset Includes
 // ----------------------------------------------
@@ -35,6 +36,11 @@ Route::post('login', [LoginController::class, 'login']);
 Route::post('auth/logout', function () {
     Auth::guard('web')->logout();
 });
+
+// OIDC Auth Routes
+Route::get('auth/oidc', [OIDCController::class, 'redirect'])->name('oidc.login');
+Route::get('auth/oidc/callback', [OIDCController::class, 'callback'])->name('oidc.callback');
+Route::post('auth/oidc/logout', [OIDCController::class, 'logout'])->name('oidc.logout');
 
 // Customer auth
 // ----------------------------------------------

@@ -108,6 +108,7 @@ use App\Http\Controllers\V1\Installation\LoginController;
 use App\Http\Controllers\V1\Installation\OnboardingWizardController;
 use App\Http\Controllers\V1\Installation\RequirementsController;
 use App\Http\Controllers\V1\Webhook\CronJobController;
+use App\Http\Controllers\V1\Admin\Settings\OIDCSettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -134,9 +135,17 @@ Route::get('ping', function () {
 // --------------------------------------
 Route::prefix('/v1')->group(function () {
 
-    // App version
-    // ----------------------------------
+    // Public routes
+    Route::get('/ping', function () {
+        return response()->json([
+            'success' => 'invoiceshelf-self-hosted',
+        ]);
+    })->name('ping');
 
+    // OIDC Settings (public route)
+    Route::get('/settings/oidc', [OIDCSettingController::class, 'getStatus']);
+
+    // App version
     Route::get('/app/version', AppVersionController::class);
 
     // Authentication & Password Reset

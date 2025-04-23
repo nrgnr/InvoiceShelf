@@ -1,0 +1,9 @@
+{
+    "login": {
+        "login": "Anmelden",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "or": "Oder",
+        "login_with_oidc": "Mit SSO anmelden"
+    }
+}
