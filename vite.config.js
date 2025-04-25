@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import laravel from 'laravel-vite-plugin';
+import tiptapPmPatch from './.vite/patches/@tiptap-pm.patch.js';
 
 export default defineConfig({
     resolve: {
@@ -10,13 +11,36 @@ export default defineConfig({
             '@': resolve(__dirname, './resources/'),
             $fonts: resolve(__dirname, './resources/static/fonts'),
             $images: resolve(__dirname, './resources/static/img'),
-            '@tiptap/pm': resolve(__dirname, './tiptap-pm-proxy.js')
+            
+            // TipTap PM resolution fix - redirect to our proxy
+            '@tiptap/pm': resolve(__dirname, './tiptap-pm-proxy.js'),
+            
+            // Also add specific submodule redirects
+            '@tiptap/pm/model': resolve(__dirname, 'node_modules/@tiptap/pm/dist/model.js'),
+            '@tiptap/pm/state': resolve(__dirname, 'node_modules/@tiptap/pm/dist/state.js'),
+            '@tiptap/pm/view': resolve(__dirname, 'node_modules/@tiptap/pm/dist/view.js'),
+            '@tiptap/pm/transform': resolve(__dirname, 'node_modules/@tiptap/pm/dist/transform.js'),
+            '@tiptap/pm/commands': resolve(__dirname, 'node_modules/@tiptap/pm/dist/commands.js'),
+            '@tiptap/pm/keymap': resolve(__dirname, 'node_modules/@tiptap/pm/dist/keymap.js'),
+            '@tiptap/pm/schema-list': resolve(__dirname, 'node_modules/@tiptap/pm/dist/schema-list.js'),
+            '@tiptap/pm/schema-basic': resolve(__dirname, 'node_modules/@tiptap/pm/dist/schema-basic.js')
         },
-        extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs']
+        extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs'],
+        dedupe: ['vue']
+    },
+    optimizeDeps: {
+        esbuildOptions: {
+            define: {
+                // Global replacements
+                global: 'globalThis'
+            }
+        },
+        exclude: ['@tiptap/pm']  // Don't pre-bundle this
     },
     build: {
         chunkSizeWarningLimit: 1000,
         rollupOptions: {
+            external: [], // Don't treat any imports as external
             output: {
                 manualChunks: {
                     'vendor': [
@@ -35,7 +59,7 @@ export default defineConfig({
                     ],
                     'editor': [
                         '@tiptap/extension-link',
-                        '@tiptap/extension-text-align',
+                        '@tiptap/extension-text-align'
                     ],
                     'forms': [
                         '@vuelidate/core',
@@ -57,20 +81,11 @@ export default defineConfig({
         }
     },
     plugins: [
+        tiptapPmPatch(),
         vue({
             template: {
                 transformAssetUrls: {
-                    // The Vue plugin will re-write asset URLs, when referenced
-                    // in Single File Components, to point to the Laravel web
-                    // server. Setting this to `null` allows the Laravel plugin
-                    // to instead re-write asset URLs to point to the Vite
-                    // server instead.
                     base: null,
-
-                    // The Vue plugin will parse absolute URLs and treat them
-                    // as absolute paths to files on disk. Setting this to
-                    // `false` will leave absolute URLs un-touched so they can
-                    // reference assets in the public directory as expected.
                     includeAbsolute: false,
                 },
             },
