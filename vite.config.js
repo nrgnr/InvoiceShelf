@@ -37,8 +37,7 @@ export default defineConfig({
                     ],
                     'editor': [
                         '@tiptap/extension-link',
-                        '@tiptap/extension-text-align',
-                        '@tiptap/pm'
+                        '@tiptap/extension-text-align'
                     ],
                     'forms': [
                         '@vuelidate/core',
