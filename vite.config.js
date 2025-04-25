@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import laravel from 'laravel-vite-plugin';
-import tiptapPmPatch from './.vite/patches/@tiptap-pm.patch.js';
 
 export default defineConfig({
     resolve: {
@@ -10,37 +9,16 @@ export default defineConfig({
             "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js",
             '@': resolve(__dirname, './resources/'),
             $fonts: resolve(__dirname, './resources/static/fonts'),
-            $images: resolve(__dirname, './resources/static/img'),
-            
-            // TipTap PM resolution fix - redirect to our proxy
-            '@tiptap/pm': resolve(__dirname, './tiptap-pm-proxy.js'),
-            
-            // Also add specific submodule redirects
-            '@tiptap/pm/model': resolve(__dirname, 'node_modules/@tiptap/pm/dist/model.js'),
-            '@tiptap/pm/state': resolve(__dirname, 'node_modules/@tiptap/pm/dist/state.js'),
-            '@tiptap/pm/view': resolve(__dirname, 'node_modules/@tiptap/pm/dist/view.js'),
-            '@tiptap/pm/transform': resolve(__dirname, 'node_modules/@tiptap/pm/dist/transform.js'),
-            '@tiptap/pm/commands': resolve(__dirname, 'node_modules/@tiptap/pm/dist/commands.js'),
-            '@tiptap/pm/keymap': resolve(__dirname, 'node_modules/@tiptap/pm/dist/keymap.js'),
-            '@tiptap/pm/schema-list': resolve(__dirname, 'node_modules/@tiptap/pm/dist/schema-list.js'),
-            '@tiptap/pm/schema-basic': resolve(__dirname, 'node_modules/@tiptap/pm/dist/schema-basic.js')
+            $images: resolve(__dirname, './resources/static/img')
         },
-        extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs'],
-        dedupe: ['vue']
-    },
-    optimizeDeps: {
-        esbuildOptions: {
-            define: {
-                // Global replacements
-                global: 'globalThis'
-            }
-        },
-        exclude: ['@tiptap/pm']  // Don't pre-bundle this
+        extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs']
     },
     build: {
-        chunkSizeWarningLimit: 1000,
+        commonjsOptions: {
+            // Fix for commonjs modules
+            transformMixedEsModules: true
+        },
         rollupOptions: {
-            external: [], // Don't treat any imports as external
             output: {
                 manualChunks: {
                     'vendor': [
@@ -49,17 +27,18 @@ export default defineConfig({
                         'pinia',
                         '@headlessui/vue',
                         '@heroicons/vue',
-                        '@tiptap/core',
-                        '@tiptap/starter-kit',
-                        '@tiptap/vue-3',
                         'axios',
                         'chart.js',
                         'moment',
                         'vue-i18n'
                     ],
                     'editor': [
+                        '@tiptap/core',
+                        '@tiptap/starter-kit',
+                        '@tiptap/vue-3',
                         '@tiptap/extension-link',
                         '@tiptap/extension-text-align'
+                        // @tiptap/pm is handled by our patch
                     ],
                     'forms': [
                         '@vuelidate/core',
@@ -70,18 +49,9 @@ export default defineConfig({
                     ]
                 }
             }
-        },
-        sourcemap: false,
-        minify: 'terser',
-        terserOptions: {
-            compress: {
-                drop_console: true,
-                drop_debugger: true
-            }
         }
     },
     plugins: [
-        tiptapPmPatch(),
         vue({
             template: {
                 transformAssetUrls: {
