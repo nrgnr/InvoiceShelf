@@ -13,40 +13,11 @@ export default defineConfig({
         },
         extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs']
     },
+    optimizeDeps: {
+        exclude: ['@tiptap/pm']
+    },
     build: {
         chunkSizeWarningLimit: 1000,
-        rollupOptions: {
-            output: {
-                manualChunks: {
-                    'vendor': [
-                        'vue',
-                        'vue-router',
-                        'pinia',
-                        '@headlessui/vue',
-                        '@heroicons/vue',
-                        '@tiptap/core',
-                        '@tiptap/starter-kit',
-                        '@tiptap/vue-3',
-                        'axios',
-                        'chart.js',
-                        'moment',
-                        'vue-i18n'
-                    ],
-                    'editor': [
-                        '@tiptap/extension-link',
-                        '@tiptap/extension-text-align',
-                        '@tiptap/pm'
-                    ],
-                    'forms': [
-                        '@vuelidate/core',
-                        '@vuelidate/validators',
-                        '@vuelidate/components',
-                        'v-money3',
-                        'vue-flatpickr-component'
-                    ]
-                }
-            }
-        },
         sourcemap: false,
         minify: 'terser',
         terserOptions: {
