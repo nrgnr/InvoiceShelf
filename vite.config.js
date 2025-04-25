@@ -9,7 +9,8 @@ export default defineConfig({
             "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js",
             '@': resolve(__dirname, './resources/'),
             $fonts: resolve(__dirname, './resources/static/fonts'),
-            $images: resolve(__dirname, './resources/static/img')
+            $images: resolve(__dirname, './resources/static/img'),
+            '@tiptap/pm': resolve(__dirname, './tiptap-pm-proxy.js')
         },
         extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs']
     },
@@ -35,7 +36,6 @@ export default defineConfig({
                     'editor': [
                         '@tiptap/extension-link',
                         '@tiptap/extension-text-align',
-                        '@tiptap/pm'
                     ],
                     'forms': [
                         '@vuelidate/core',
