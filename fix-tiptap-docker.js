@@ -1,27 +1,50 @@
 #!/usr/bin/env node
 
 /**
- * Direct fix for @tiptap/pm in Docker
+ * Direct fix for @tiptap/pm in both Docker and local environments
  * This script modifies the package.json and creates properly structured exports
- * Run this script inside the Docker container BEFORE building
+ * Run this script BEFORE building with: npm run fix-tiptap
  */
 
 const fs = require('fs');
 const path = require('path');
 
-// Docker-specific path to node_modules
-const PM_PATH = '/var/www/html/node_modules/@tiptap/pm';
+// Check multiple possible paths for node_modules
+const possiblePaths = [
+  // Docker paths
+  '/var/www/html/node_modules/@tiptap/pm',
+  // Local paths
+  './node_modules/@tiptap/pm',
+  path.resolve('./node_modules/@tiptap/pm')
+];
 
-console.log('🔧 Fixing @tiptap/pm package.json in Docker...');
+// Find the first path that exists
+let PM_PATH = null;
+for (const pathToCheck of possiblePaths) {
+  if (fs.existsSync(pathToCheck)) {
+    PM_PATH = pathToCheck;
+    break;
+  }
+}
 
-if (!fs.existsSync(PM_PATH)) {
-  console.error('❌ ERROR: @tiptap/pm not found at ' + PM_PATH);
+if (!PM_PATH) {
+  console.error('❌ ERROR: @tiptap/pm not found in any of the expected locations');
+  console.error('Please make sure @tiptap/pm is installed. Try running: npm install');
   process.exit(1);
 }
+
+console.log(`🔧 Fixing @tiptap/pm package.json at ${PM_PATH}...`);
 
 // Create a correct index.js file with proper exports
 const indexDistPath = path.join(PM_PATH, 'dist', 'index.js');
 console.log(`Creating index.js at ${indexDistPath}...`);
+
+// Make sure dist directory exists
+const distDir = path.join(PM_PATH, 'dist');
+if (!fs.existsSync(distDir)) {
+  console.log(`Creating dist directory at ${distDir}...`);
+  fs.mkdirSync(distDir, { recursive: true });
+}
 
 const indexContent = `
 /**
@@ -84,4 +107,4 @@ try {
 }
 
 console.log('✅ @tiptap/pm package successfully fixed!');
-console.log('🚀 You can now run `npm run build` inside the Docker container.'); 
+console.log('🚀 You can now run your build command.'); 

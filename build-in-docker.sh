@@ -7,12 +7,10 @@ set -e # Exit on any error
 
 echo "🐳 Running build in Docker container..."
 
-# Copy our fix script to the container
-echo "📂 Copying fix script to container..."
-docker compose cp fix-tiptap-docker.js invoiceshelf-app:/var/www/html/
-
-# Copy our build script
-echo "📂 Copying build script to container..."
+# Copy our fix scripts to the container
+echo "📂 Copying fix scripts to container..."
+docker compose cp fix-tiptap-docker.js invoiceshelf-app:/var/www/html/ 2>/dev/null || true
+docker compose cp tiptap-pm-proxy.js invoiceshelf-app:/var/www/html/ 2>/dev/null || true
 docker compose cp docker-build.sh invoiceshelf-app:/var/www/html/
 
 # Run the build script in the container

@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import laravel from 'laravel-vite-plugin';
-import tiptapPmPatch from './.vite/patches/@tiptap-pm.patch.js';
 
 export default defineConfig({
     resolve: {
@@ -10,9 +9,27 @@ export default defineConfig({
             "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js",
             '@': resolve(__dirname, './resources/'),
             $fonts: resolve(__dirname, './resources/static/fonts'),
-            $images: resolve(__dirname, './resources/static/img')
+            $images: resolve(__dirname, './resources/static/img'),
+            // Direct alias for @tiptap/pm to avoid the '.' specifier error
+            '@tiptap/pm': resolve(__dirname, './tiptap-pm-proxy.js'),
         },
         extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs']
+    },
+    optimizeDeps: {
+        include: [
+            '@tiptap/core',
+            '@tiptap/starter-kit',
+            '@tiptap/vue-3',
+            '@tiptap/extension-link',
+            '@tiptap/extension-text-align',
+            'lodash',
+            'vue',
+            'vue-router',
+            'pinia'
+        ],
+        // Force @tiptap/pm to be pre-bundled to fix the module resolution
+        // This helps avoid the "Missing '.' specifier" error
+        force: ['@tiptap/pm']
     },
     build: {
         commonjsOptions: {
@@ -39,7 +56,7 @@ export default defineConfig({
                         '@tiptap/vue-3',
                         '@tiptap/extension-link',
                         '@tiptap/extension-text-align'
-                        // @tiptap/pm is handled by our patch
+                        // @tiptap/pm is handled by our alias
                     ],
                     'forms': [
                         '@vuelidate/core',
@@ -53,9 +70,6 @@ export default defineConfig({
         }
     },
     plugins: [
-        // TipTap PM patch to fix module resolution
-        tiptapPmPatch(),
-        
         vue({
             template: {
                 transformAssetUrls: {
