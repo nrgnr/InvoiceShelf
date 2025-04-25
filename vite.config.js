@@ -20,33 +20,6 @@ export default defineConfig({
         chunkSizeWarningLimit: 1000,
         rollupOptions: {
             output: {
-                manualChunks: {
-                    'vendor': [
-                        'vue',
-                        'vue-router',
-                        'pinia',
-                        '@headlessui/vue',
-                        '@heroicons/vue',
-                        '@tiptap/core',
-                        '@tiptap/starter-kit',
-                        '@tiptap/vue-3',
-                        'axios',
-                        'chart.js',
-                        'moment',
-                        'vue-i18n'
-                    ],
-                    'editor': [
-                        '@tiptap/extension-link',
-                        '@tiptap/extension-text-align'
-                    ],
-                    'forms': [
-                        '@vuelidate/core',
-                        '@vuelidate/validators',
-                        '@vuelidate/components',
-                        'v-money3',
-                        'vue-flatpickr-component'
-                    ]
-                }
             }
         },
         sourcemap: false,
