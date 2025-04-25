@@ -16,12 +16,9 @@ if [ ! -d "node_modules" ]; then
   npm ci || npm install
 fi
 
-# Make sure our proxy file exists in the Docker container
-if [ ! -f "tiptap-pm-proxy.js" ]; then
-  echo "⚠️ Missing TipTap/PM proxy file, creating it..."
-  # Copy from host if available
-  cp -f /var/www/html/tiptap-pm-proxy.js /var/www/html/ 2>/dev/null || true
-fi
+# Apply direct fix to @tiptap/pm
+echo "🔧 Applying TipTap PM fix..."
+node fix-tiptap-docker.js
 
 # Attempt build
 echo "🚀 Starting build process..."
