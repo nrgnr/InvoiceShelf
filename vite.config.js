@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import laravel from 'laravel-vite-plugin';
+import tiptapPmPatch from './.vite/patches/@tiptap-pm.patch.js';
 
 export default defineConfig({
     resolve: {
@@ -52,6 +53,9 @@ export default defineConfig({
         }
     },
     plugins: [
+        // TipTap PM patch to fix module resolution
+        tiptapPmPatch(),
+        
         vue({
             template: {
                 transformAssetUrls: {

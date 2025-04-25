@@ -3,7 +3,6 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node .docker/scripts/fix-tiptap-pm.js",
     "build": "vite build",
     "serve": "vite preview",
     "test": "eslint ./resources/scripts --ext .js,.vue"

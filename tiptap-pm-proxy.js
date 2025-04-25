@@ -1,9 +1,11 @@
 /**
- * This is a compatibility layer for @tiptap/pm imports
- * It reexports from specific submodules to avoid the Vite build issue
+ * TipTap PM Proxy Module for Vite 5+
+ * 
+ * This file solves the "Missing '.' specifier in '@tiptap/pm'" error in Vite builds
+ * by directly importing from specific submodules and re-exporting them.
  */
 
-// Important: Export all submodules as named exports
+// Import all submodules from their specific paths
 import * as model from '@tiptap/pm/model';
 import * as state from '@tiptap/pm/state';
 import * as view from '@tiptap/pm/view';
@@ -13,49 +15,50 @@ import * as keymap from '@tiptap/pm/keymap';
 import * as schema_list from '@tiptap/pm/schema-list';
 import * as schema_basic from '@tiptap/pm/schema-basic';
 
-// Re-export everything as named exports
+// Re-export all submodules as namespaces
 export { model, state, view, transform, commands, keymap, schema_list, schema_basic };
 
-// Also export individual components from each module
-// model
+// Export all individual components that are commonly used
+
+// From model
 export { 
-  Schema, DOMParser, DOMSerializer, Fragment, Mark, Node, Slice,
-  NodeType, MarkType, ResolvedPos
+  Schema, DOMParser, DOMSerializer, Fragment, Mark, 
+  Node, Slice, NodeType, MarkType, ResolvedPos
 } from '@tiptap/pm/model';
 
-// state
+// From state
 export { 
   Plugin, PluginKey, TextSelection, Selection, AllSelection, 
   NodeSelection, EditorState, Transaction, StateField
 } from '@tiptap/pm/state';
 
-// view
+// From view
 export { 
   EditorView, Decoration, DecorationSet, NodeView
 } from '@tiptap/pm/view';
 
-// transform
+// From transform
 export { 
   Transform, Step, StepResult, ReplaceStep, ReplaceAroundStep, 
-  AddMarkStep, RemoveMarkStep, liftTarget, findWrapping, canJoin, canSplit
+  AddMarkStep, RemoveMarkStep, liftTarget, findWrapping
 } from '@tiptap/pm/transform';
 
-// commands
+// From commands
 export { 
   baseKeymap, toggleMark, setBlockType, wrapIn, lift
 } from '@tiptap/pm/commands';
 
-// keymap
+// From keymap
 export { 
-  keymap, keydownHandler
+  keymap
 } from '@tiptap/pm/keymap';
 
-// schema-list
+// From schema-list
 export { 
   addListNodes, wrapInList, splitListItem, liftListItem, sinkListItem
 } from '@tiptap/pm/schema-list';
 
-// schema-basic
+// From schema-basic
 export { 
   schema
 } from '@tiptap/pm/schema-basic';
