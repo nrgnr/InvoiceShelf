@@ -21,6 +21,13 @@ if [ "$APP_ENV" = "production" ]; then
     echo "Installing Node.js dependencies..."
     # Force npm to ignore engine requirements
     npm config set engine-strict false
+    
+    # Temporarily disable any postinstall scripts that use patch-package to avoid errors
+    if grep -q "postinstall.*patch-package" package.json; then
+        echo "Temporarily disabling patch-package postinstall script..."
+        sed -i.bak 's/"postinstall": "patch-package"/"disabled-postinstall": "patch-package"/g' package.json
+    fi
+    
     # Install all dependencies including dev dependencies needed for build
     npm install --no-audit --no-fund
     
