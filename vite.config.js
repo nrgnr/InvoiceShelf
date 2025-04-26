@@ -13,9 +13,6 @@ export default defineConfig({
         },
         extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.mjs']
     },
-    optimizeDeps: {
-        include: ['@tiptap/pm'],
-    },
     build: {
         chunkSizeWarningLimit: 1000,
         rollupOptions: {
