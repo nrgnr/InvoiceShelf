@@ -5,7 +5,8 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "eslint ./resources/scripts --ext .js,.vue"
+    "test": "eslint ./resources/scripts --ext .js,.vue",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "@rvxlab/tailwind-plugin-ios-full-height": "^1.1.0",
@@ -19,6 +20,7 @@
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue": "^9.32.0",
+    "patch-package": "^8.0.0",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "sass": "^1.83.1",
