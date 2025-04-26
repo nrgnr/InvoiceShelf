@@ -65,41 +65,7 @@ if [ "$APP_ENV" = "production" ]; then
     echo "==== END DEBUGGING ===="
 
     echo "Building frontend assets..."
-    # Use more verbose logging for the build
-    export NODE_OPTIONS="--trace-warnings"
-    # Redirect stderr to a log file while still showing it on the console
-    NODE_ENV=production npm run build 2>&1 | tee /tmp/vite-build.log
-
-    # Check build result and provide debugging if it failed
-    if [ $? -ne 0 ]; then
-        echo "❌ Build failed!"
-        echo "Checking for @tiptap/pm errors in build log:"
-        grep -i tiptap /tmp/vite-build.log
-        
-        echo "Trying alternative solution - directly modify node_modules with brute force approach..."
-        # Create a minimal export file
-        mkdir -p node_modules/@tiptap/pm/dist
-        echo 'export * from "./state/dist/index.js";' > node_modules/@tiptap/pm/dist/index.js
-        echo '{
-          "name": "@tiptap/pm",
-          "type": "module",
-          "exports": {
-            ".": {
-              "import": "./dist/index.js",
-              "require": "./state/dist/index.cjs"
-            },
-            "./state": {
-              "import": "./state/dist/index.js",
-              "require": "./state/dist/index.cjs"
-            }
-          }
-        }' > node_modules/@tiptap/pm/package.json
-        
-        echo "Retrying build with forced fix..."
-        NODE_ENV=production npm run build
-    else
-        echo "✅ Build completed successfully"
-    fi
+    NODE_ENV=production npm run build
 
     # After build, we can remove dev dependencies
     echo "Removing development dependencies..."
