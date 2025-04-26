@@ -75,6 +75,10 @@ if [ "$APP_ENV" = "production" ]; then
     fi
     echo "==== END DEBUGGING ===="
 
+    # Install terser for minification
+    echo "Installing terser for Vite minification..."
+    npm install --no-save terser
+
     echo "Building frontend assets..."
     # Use more verbose logging for the build
     export NODE_OPTIONS="--trace-warnings"
