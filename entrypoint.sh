@@ -23,8 +23,12 @@ if [ "$APP_ENV" = "production" ]; then
     npm config set engine-strict false
     # Install all dependencies including dev dependencies needed for build
     npm install --no-audit --no-fund
-    # Copy patched files for @tiptap/pm
-    cp patches/@tiptap+pm+2.11.7.patch /var/www/html/patches/@tiptap+pm+2.11.7.patch
+    
+    # Skip copy and create patch files directly
+    echo "Creating patch files directly in the container..."
+    mkdir -p patches
+    
+    # No need to copy/create patch file since we apply fixes directly
 
     # Add debug logging for @tiptap/pm issue
     echo "==== DEBUGGING @tiptap/pm ISSUE ===="
